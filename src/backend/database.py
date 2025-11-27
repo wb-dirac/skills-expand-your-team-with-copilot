@@ -2,16 +2,16 @@
 MongoDB database configuration and setup for Mergington High School API
 """
 
-import os
 from argon2 import PasswordHasher
 
 # Use mongomock for testing if MongoDB is not available
 try:
     from pymongo import MongoClient
+    from pymongo.errors import ServerSelectionTimeoutError, ConnectionFailure
     client = MongoClient('mongodb://localhost:27017/', serverSelectionTimeoutMS=1000)
     # Test the connection
     client.admin.command('ping')
-except Exception:
+except (ServerSelectionTimeoutError, ConnectionFailure, ImportError):
     # Fall back to mongomock for testing
     import mongomock
     client = mongomock.MongoClient()
