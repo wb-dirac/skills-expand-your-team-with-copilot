@@ -97,6 +97,20 @@ document.addEventListener("DOMContentLoaded", () => {
     weekend: { days: ["Saturday", "Sunday"] }, // Weekend days
   };
 
+  // Popup window options for social sharing
+  const sharePopupOptions = "noopener,noreferrer,width=550,height=420";
+
+  // Escape HTML special characters for safe attribute interpolation
+  function escapeHtmlAttr(str) {
+    if (!str) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
   // Initialize filters from active elements
   function initializeFilters() {
     // Initialize day filter
@@ -650,6 +664,21 @@ document.addEventListener("DOMContentLoaded", () => {
         `
         }
       </div>
+      <div class="share-buttons">
+        <span class="share-label">Share:</span>
+        <button class="share-btn share-twitter" data-activity="${escapeHtmlAttr(name)}" data-description="${escapeHtmlAttr(details.description)}" title="Share on Twitter">
+          <span class="share-icon">𝕏</span>
+        </button>
+        <button class="share-btn share-facebook" data-activity="${escapeHtmlAttr(name)}" data-description="${escapeHtmlAttr(details.description)}" title="Share on Facebook">
+          <span class="share-icon">f</span>
+        </button>
+        <button class="share-btn share-whatsapp" data-activity="${escapeHtmlAttr(name)}" data-description="${escapeHtmlAttr(details.description)}" title="Share on WhatsApp">
+          <span class="share-icon">💬</span>
+        </button>
+        <button class="share-btn share-email" data-activity="${escapeHtmlAttr(name)}" data-description="${escapeHtmlAttr(details.description)}" title="Share via Email">
+          <span class="share-icon">✉</span>
+        </button>
+      </div>
     `;
 
     // Add click handlers for delete buttons
@@ -668,7 +697,39 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // Add click handlers for share buttons
+    const shareButtons = activityCard.querySelectorAll(".share-btn");
+    shareButtons.forEach((button) => {
+      button.addEventListener("click", handleShare);
+    });
+
     activitiesList.appendChild(activityCard);
+  }
+
+  // Handle social sharing
+  function handleShare(event) {
+    const button = event.currentTarget;
+    const activityName = button.dataset.activity;
+    const description = button.dataset.description;
+    const pageUrl = window.location.href;
+    const shareText = `Check out "${activityName}" at Mergington High School! ${description}`;
+
+    let shareUrl;
+
+    if (button.classList.contains("share-twitter")) {
+      shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`;
+      window.open(shareUrl, "_blank", sharePopupOptions);
+    } else if (button.classList.contains("share-facebook")) {
+      shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${encodeURIComponent(shareText)}`;
+      window.open(shareUrl, "_blank", sharePopupOptions);
+    } else if (button.classList.contains("share-whatsapp")) {
+      shareUrl = `https://wa.me/?text=${encodeURIComponent(shareText + " " + pageUrl)}`;
+      window.open(shareUrl, "_blank", sharePopupOptions);
+    } else if (button.classList.contains("share-email")) {
+      const subject = encodeURIComponent(`Check out ${activityName} at Mergington High School!`);
+      const body = encodeURIComponent(`${shareText}\n\nLearn more: ${pageUrl}`);
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    }
   }
 
   // Event listeners for search and filter
