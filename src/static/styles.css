@@ -32,6 +32,36 @@
   --info-light: #d1ecf1;
 }
 
+/* Dark mode color palette */
+body.dark-mode {
+  --primary: #5c6bc0;
+  --primary-light: #8e99f3;
+  --primary-dark: #26418f;
+  --primary-text: #ffffff;
+
+  --secondary: #ffb74d;
+  --secondary-light: #ffe97d;
+  --secondary-dark: #c88719;
+  --secondary-text: #000000;
+
+  --background: #121212;
+  --surface: #1e1e1e;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --border: #333333;
+  --border-light: #2a2a2a;
+  --border-focus: #444444;
+
+  --success: #4caf50;
+  --success-light: #1b3d1c;
+  --warning: #ffa726;
+  --warning-light: #3d3015;
+  --error: #ef5350;
+  --error-light: #3d1515;
+  --info: #29b6f6;
+  --info-light: #152633;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -203,6 +233,34 @@ section h3 {
   border-radius: 10px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
+}
+
+/* Difficulty Tag */
+.difficulty-tag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 0.65rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.difficulty-beginner {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.difficulty-intermediate {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.difficulty-advanced {
+  background-color: #ffebee;
+  color: #c62828;
 }
 
 /* Capacity Indicator */
@@ -539,7 +597,8 @@ footer {
 
 .category-filters,
 .day-filters,
-.time-filters {
+.time-filters,
+.difficulty-filters {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -547,7 +606,8 @@ footer {
 
 .category-filter,
 .day-filter,
-.time-filter {
+.time-filter,
+.difficulty-filter {
   background-color: var(--background);
   border: 1px solid var(--border);
   color: var(--text-primary);
@@ -560,7 +620,8 @@ footer {
 
 .category-filter.active,
 .day-filter.active,
-.time-filter.active {
+.time-filter.active,
+.difficulty-filter.active {
   background-color: var(--primary);
   color: white;
   border-color: var(--primary-dark);
@@ -568,12 +629,14 @@ footer {
 
 .category-filter:hover,
 .day-filter:hover,
-.time-filter:hover {
+.time-filter:hover,
+.difficulty-filter:hover {
   background-color: var(--primary-light);
   color: white;
 }
 
-.time-filters {
+.time-filters,
+.difficulty-filters {
   width: 100%;
 }
 
@@ -738,4 +801,28 @@ footer {
 
 .share-email:hover {
   background-color: var(--primary-light);
+/* Dark mode toggle button */
+#theme-toggle {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 20px;
+  padding: 4px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  color: var(--primary-text);
+  transition: background-color 0.2s;
+}
+
+#theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+#theme-toggle .theme-icon {
+  font-size: 1rem;
 }
